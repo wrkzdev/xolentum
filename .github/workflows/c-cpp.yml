@@ -2,34 +2,34 @@ name: ci
 
 on: [push, pull_request]
 
-jobs:
-  build-macos:
-    runs-on: macOS-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: recursive
-    - name: Update brew and install Xolentum dependencies
-      run: brew update && brew install boost hidapi zmq libpgm miniupnpc ldns expat libunwind-headers protobuf
-    - name: Build
-      run: make -j3
+#jobs:
+#  build-macos:
+#    runs-on: [self-hosted, macOS-latest]
+#    steps:
+#    - uses: actions/checkout@v1
+#      with:
+#        submodules: recursive
+#    - name: Update brew and install Xolentum dependencies
+#      run: brew update && brew install boost hidapi zmq libpgm miniupnpc ldns expat libunwind-headers protobuf
+#    - name: Build
+#      run: make -j3
 
-  build-windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: recursive
-    - uses: eine/setup-msys2@v0
-      with:
-        update: true
-    - name: Install Xolentum dependencies
-      run: msys2do pacman -S --needed --noconfirm mingw-w64-x86_64-toolchain make mingw-w64-x86_64-cmake mingw-w64-x86_64-boost mingw-w64-x86_64-openssl mingw-w64-x86_64-zeromq mingw-w64-x86_64-libsodium mingw-w64-x86_64-hidapi mingw-w64-x86_64-protobuf-c mingw-w64-x86_64-libusb git
-    - name: Build
-      run: msys2do make release-static-win64 -j2
+#  build-windows:
+#    runs-on: windows-latest
+#    steps:
+#    - uses: actions/checkout@v1
+#      with:
+#        submodules: recursive
+#    - uses: eine/setup-msys2@v0
+#      with:
+#        update: true
+#    - name: Install Xolentum dependencies
+#      run: msys2do pacman -S --needed --noconfirm mingw-w64-x86_64-toolchain make mingw-w64-x86_64-cmake mingw-w64-x86_64-boost mingw-w64-x86_64-openssl mingw-w64-x86_64-zeromq mingw-w64-x86_64-libsodium mingw-w64-x86_64-hidapi mingw-w64-x86_64-protobuf-c mingw-w64-x86_64-libusb git
+#    - name: Build
+#      run: msys2do make release-static-win64 -j2
 
   build-ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
     steps:
     - uses: actions/checkout@v1
       with:
@@ -49,7 +49,7 @@ jobs:
       run: make -j3
 
   libwallet-ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
     steps:
     - uses: actions/checkout@v1
       with:
@@ -70,7 +70,7 @@ jobs:
 
   test-ubuntu:
     needs: build-ubuntu
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
     steps:
     - uses: actions/checkout@v1
       with:
