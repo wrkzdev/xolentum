@@ -47,5 +47,7 @@ const uint64_t testnet_hard_fork_version_1_till = 5203;
 
 const hardfork_t stagenet_hard_forks[] = {
   { 1, 1, 0, 1596630477 },
+  { 2, 2330, 0, 1596630477 },
+  { 3, 2350, 0, 1596630477 },
 };
 const size_t num_stagenet_hard_forks = sizeof(stagenet_hard_forks) / sizeof(stagenet_hard_forks[0]);
