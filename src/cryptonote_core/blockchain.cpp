@@ -3182,8 +3182,14 @@ bool Blockchain::check_tx_inputs(transaction& tx, tx_verification_context &tvc, 
     sig_index++;
   }
 
-  CHECK_AND_ASSERT_MES(*pmax_used_block_height + CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE <= m_db->height(),
-    false, "Transaction spends at least one output which is too young");
+  if (hf_version >= HF_VERSION_ENFORCE_MIN_AGE_V2)
+  {
+    CHECK_AND_ASSERT_MES(*pmax_used_block_height + CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE_V2 <= m_db->height(),
+        false, "Transaction spends at least one output which is too young");
+  } else {
+    CHECK_AND_ASSERT_MES(*pmax_used_block_height + CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE <= m_db->height(),
+        false, "Transaction spends at least one output which is too young");
+  }
 
   {
     if (!expand_transaction_2(tx, tx_prefix_hash, pubkeys))
